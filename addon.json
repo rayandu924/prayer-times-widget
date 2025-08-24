@@ -1,0 +1,68 @@
+{
+  "name": "Widget Heures de Prière",
+  "description": "Widget élégant affichant les heures de prière avec configuration personnalisable",
+  "version": "1.0.0",
+  "author": {
+    "name": "Rayan",
+    "github": "rayandu924"
+  },
+  "type": "widget",
+  "category": ["spirituality", "islam", "time"],
+  "settings": {
+    "city": {
+      "type": "text",
+      "label": "Ville",
+      "description": "Votre ville pour calculer les heures de prière",
+      "default": "Paris",
+      "placeholder": "Paris, Londres, New York..."
+    },
+    "country": {
+      "type": "text", 
+      "label": "Pays",
+      "description": "Votre pays",
+      "default": "France",
+      "placeholder": "France, UK, USA..."
+    },
+    "displayCount": {
+      "type": "select",
+      "label": "Nombre de prières à afficher",
+      "description": "Combien de prochaines prières afficher",
+      "default": "2",
+      "options": [
+        {"value": "1", "label": "Prochaine prière seulement"},
+        {"value": "2", "label": "2 prochaines prières"},
+        {"value": "3", "label": "3 prochaines prières"},
+        {"value": "all", "label": "Toutes les prières du jour"}
+      ]
+    },
+    "theme": {
+      "type": "select",
+      "label": "Thème",
+      "description": "Style visuel du widget",
+      "default": "modern",
+      "options": [
+        {"value": "modern", "label": "Moderne"},
+        {"value": "classic", "label": "Classique"},
+        {"value": "minimal", "label": "Minimaliste"}
+      ]
+    },
+    "primaryColor": {
+      "type": "color",
+      "label": "Couleur principale",
+      "description": "Couleur d'accentuation du widget",
+      "default": "#2d7c47"
+    },
+    "showCurrentTime": {
+      "type": "boolean",
+      "label": "Afficher l'heure actuelle",
+      "description": "Affiche l'heure locale en temps réel",
+      "default": true
+    },
+    "showCountdown": {
+      "type": "boolean", 
+      "label": "Afficher le compte à rebours",
+      "description": "Affiche le temps restant avant la prochaine prière",
+      "default": true
+    }
+  }
+}
