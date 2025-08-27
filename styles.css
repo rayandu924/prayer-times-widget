@@ -1,0 +1,243 @@
+/* Variables CSS pour thèmes dynamiques */
+:root {
+  --primary-color: #2d7c47;
+  --bg-color: rgba(0, 0, 0, 0.8);
+  --text-color: #ffffff;
+  --accent-color: rgba(45, 124, 71, 0.2);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: transparent;
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+.widget-container {
+  background: transparent;
+  backdrop-filter: blur(3.2vmin);
+  border-radius: 2.6vmin;
+  border: 0.16vmin solid var(--border-color);
+  box-shadow: 0 1.3vmin 5.1vmin rgba(0, 0, 0, 0.3);
+  padding: 3.2vmin;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.6vmin;
+  position: relative;
+}
+
+/* Section heure actuelle */
+.current-time-section {
+  text-align: center;
+  padding: 1.6vmin;
+  border-radius: 1.9vmin;
+  background: var(--accent-color);
+  border: 0.16vmin solid var(--primary-color);
+}
+
+.current-time {
+  font-size: 3.2vmin;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.64vmin;
+  font-family: 'Courier New', monospace;
+}
+
+.current-date {
+  font-size: 1.4vmin;
+  opacity: 0.8;
+  color: var(--text-color);
+}
+
+/* Section prières */
+.prayers-section {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 1.8vmin;
+  font-weight: 600;
+  margin-bottom: 1.9vmin;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.prayers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3vmin;
+}
+
+.prayer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.9vmin 2.6vmin;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1.3vmin;
+  border: 0.16vmin solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.prayer-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color);
+}
+
+.prayer-item.next-prayer {
+  background: var(--accent-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 20px rgba(45, 124, 71, 0.3);
+}
+
+.prayer-name {
+  display: flex;
+  align-items: center;
+  gap: 1.3vmin;
+  font-weight: 500;
+  font-size: 1.6vmin;
+}
+
+.prayer-icon {
+  font-size: 1.9vmin;
+}
+
+.prayer-time {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 1.6vmin;
+}
+
+/* Compte à rebours */
+.countdown-section {
+  text-align: center;
+  padding: 1.9vmin;
+  background: linear-gradient(135deg, var(--accent-color), rgba(45, 124, 71, 0.1));
+  border-radius: 1.3vmin;
+  border: 0.16vmin solid var(--primary-color);
+}
+
+.countdown-label {
+  font-size: 1.3vmin;
+  opacity: 0.9;
+  margin-bottom: 0.64vmin;
+}
+
+.countdown-time {
+  font-size: 2.2vmin;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: 'Courier New', monospace;
+}
+
+/* Status message */
+.status-message {
+  text-align: center;
+  padding: 1.3vmin;
+  font-size: 1.4vmin;
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1vmin;
+}
+
+.status-message.error {
+  background: rgba(220, 38, 38, 0.2);
+  border: 0.16vmin solid rgba(220, 38, 38, 0.5);
+  color: #fca5a5;
+}
+
+.status-message.success {
+  background: rgba(34, 197, 94, 0.2);
+  border: 0.16vmin solid rgba(34, 197, 94, 0.5);
+  color: #86efac;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.6vmin);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prayer-item {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Thèmes */
+.widget-container.theme-classic {
+  --bg-color: rgba(139, 69, 19, 0.9);
+  --primary-color: #d4af37;
+  --accent-color: rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+}
+
+.widget-container.theme-minimal {
+  --bg-color: rgba(17, 24, 39, 0.95);
+  --primary-color: #60a5fa;
+  --accent-color: rgba(96, 165, 250, 0.1);
+  border: none;
+  padding: 2.6vmin;
+}
+
+/* Responsive adjustments using aspect ratio */
+@media (max-aspect-ratio: 1/1) {
+  .widget-container {
+    padding: 2.4vmin;
+    gap: 2vmin;
+  }
+  
+  .prayer-item {
+    flex-direction: column;
+    gap: 0.8vmin;
+    text-align: center;
+    padding: 1.4vmin;
+  }
+  
+  .current-time {
+    font-size: 2.8vmin;
+  }
+  
+  .section-title {
+    font-size: 1.6vmin;
+  }
+}
+
+@media (min-aspect-ratio: 3/1) {
+  .widget-container {
+    padding: 3.8vmin;
+    gap: 3.2vmin;
+  }
+  
+  .current-time {
+    font-size: 3.8vmin;
+  }
+  
+  .section-title {
+    font-size: 2.2vmin;
+  }
+  
+  .prayer-name, .prayer-time {
+    font-size: 1.9vmin;
+  }
+}
+
+/* États cachés */
+.hidden {
+  display: none !important;
+}

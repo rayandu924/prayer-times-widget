@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Heures de Prière</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="prayer-widget" class="widget-container">
+        <!-- Header avec heure actuelle -->
+        <div id="current-time-section" class="current-time-section">
+            <div class="current-time" id="current-time">--:--</div>
+            <div class="current-date" id="current-date">-- --- ----</div>
+        </div>
+
+        <!-- Section prochaines prières -->
+        <div id="prayers-section" class="prayers-section">
+            <div class="section-title">🕌 Prochaines Prières</div>
+            <div id="prayers-list" class="prayers-list">
+                <!-- Les prières seront injectées ici par JavaScript -->
+            </div>
+        </div>
+
+        <!-- Compte à rebours -->
+        <div id="countdown-section" class="countdown-section">
+            <div class="countdown-label">Prochaine prière dans</div>
+            <div class="countdown-time" id="countdown-time">--:--:--</div>
+        </div>
+
+        <!-- Status/Loading -->
+        <div id="status" class="status-message">
+            📍 Chargement des heures de prière...
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
