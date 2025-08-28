@@ -254,11 +254,39 @@ class PrayerTimesWidget {
         // Get prayers to show based on settings
         const prayersToShow = this.getPrayersToShow(prayers);
         
-        // Generate beautiful prayer cards
-        prayersListEl.innerHTML = prayersToShow.map((prayerKey, index) => {
+        // Generate countdown as first rectangle + prayer cards
+        let cardsHtml = '';
+        
+        // Add countdown as first rectangle if enabled
+        if (this.settings.showCountdown && this.nextPrayerIndex >= 0) {
+            const nextPrayerKey = prayers[this.nextPrayerIndex];
+            const nextPrayer = this.prayerNames[nextPrayerKey];
+            
+            let countdownNameHtml = '';
+            if (this.settings.showFrenchNames) {
+                countdownNameHtml += `<div class="prayer-name-en">${nextPrayer.frenchName} dans</div>`;
+            }
+            if (this.settings.showArabicNames) {
+                countdownNameHtml += `<div class="prayer-name-ar">${nextPrayer.nameAr}</div>`;
+            }
+            
+            cardsHtml += `
+                <div class="prayer-card next-prayer countdown-card">
+                    <div class="prayer-info">
+                        <div class="prayer-icon">⏰</div>
+                        <div class="prayer-names">
+                            ${countdownNameHtml}
+                        </div>
+                    </div>
+                    <div class="prayer-time" id="countdown-display">--:--:--</div>
+                </div>
+            `;
+        }
+        
+        // Add regular prayer cards
+        cardsHtml += prayersToShow.map((prayerKey, index) => {
             const prayer = this.prayerNames[prayerKey];
             const time = this.prayerTimes[prayerKey];
-            const isNext = index === 0 && this.settings.displayCount !== 'all';
             
             let nameHtml = '';
             if (this.settings.showFrenchNames) {
@@ -269,7 +297,7 @@ class PrayerTimesWidget {
             }
             
             return `
-                <div class="prayer-card ${isNext ? 'next-prayer' : ''}" style="animation-delay: ${index * 100}ms;">
+                <div class="prayer-card" style="animation-delay: ${(index + 1) * 100}ms;">
                     <div class="prayer-info">
                         <div class="prayer-icon">${prayer.icon}</div>
                         <div class="prayer-names">
@@ -281,24 +309,7 @@ class PrayerTimesWidget {
             `;
         }).join('');
         
-        // Update next prayer card
-        this.updateNextPrayerCard(prayers);
-    }
-    
-    // 📋 Update next prayer highlight card
-    updateNextPrayerCard(prayers) {
-        const nextPrayerCard = document.getElementById('next-prayer-card');
-        const nextPrayerName = document.getElementById('next-prayer-name');
-        
-        if (this.nextPrayerIndex >= 0 && this.nextPrayerIndex < prayers.length) {
-            const nextPrayerKey = prayers[this.nextPrayerIndex];
-            const prayer = this.prayerNames[nextPrayerKey];
-            
-            nextPrayerName.textContent = `${prayer.frenchName} dans`;
-            nextPrayerCard.style.display = 'block';
-        } else {
-            nextPrayerCard.style.display = 'none';
-        }
+        prayersListEl.innerHTML = cardsHtml;
     }
     
     // 🔍 Find next prayer
