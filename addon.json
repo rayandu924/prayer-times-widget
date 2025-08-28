@@ -9,19 +9,12 @@
   "type": "widget",
   "category": ["spirituality", "islam", "time"],
   "settings": {
-    "city": {
+    "geolocation": {
       "type": "text",
-      "label": "Ville",
-      "description": "Votre ville pour calculer les heures de prière",
-      "default": "Paris",
-      "placeholder": "Paris, Londres, New York..."
-    },
-    "country": {
-      "type": "text", 
-      "label": "Pays",
-      "description": "Votre pays",
-      "default": "France",
-      "placeholder": "France, UK, USA..."
+      "label": "Géolocalisation",
+      "description": "Coordonnées GPS (latitude,longitude) ou texte de localisation",
+      "default": "48.8566,2.3522",
+      "placeholder": "48.8566,2.3522 ou Paris,France"
     },
     "displayCount": {
       "type": "select",
@@ -32,18 +25,8 @@
         {"value": "1", "label": "Prochaine prière seulement"},
         {"value": "2", "label": "2 prochaines prières"},
         {"value": "3", "label": "3 prochaines prières"},
+        {"value": "remaining", "label": "Prières restantes de la journée"},
         {"value": "all", "label": "Toutes les prières du jour"}
-      ]
-    },
-    "theme": {
-      "type": "select",
-      "label": "Thème",
-      "description": "Style visuel du widget",
-      "default": "modern",
-      "options": [
-        {"value": "modern", "label": "Moderne"},
-        {"value": "classic", "label": "Classique"},
-        {"value": "minimal", "label": "Minimaliste"}
       ]
     },
     "primaryColor": {
@@ -52,17 +35,35 @@
       "description": "Couleur d'accentuation du widget",
       "default": "#2d7c47"
     },
-    "showCurrentTime": {
-      "type": "boolean",
-      "label": "Afficher l'heure actuelle",
-      "description": "Affiche l'heure locale en temps réel",
-      "default": true
-    },
     "showCountdown": {
       "type": "boolean", 
       "label": "Afficher le compte à rebours",
       "description": "Affiche le temps restant avant la prochaine prière",
       "default": true
+    },
+    "showArabicNames": {
+      "type": "boolean",
+      "label": "Afficher noms arabes",
+      "description": "Afficher la traduction arabe des prières",
+      "default": true
+    },
+    "showFrenchNames": {
+      "type": "boolean",
+      "label": "Afficher noms français", 
+      "description": "Afficher la traduction française des prières",
+      "default": true
+    },
+    "fontUrl": {
+      "type": "url",
+      "label": "Font URL",
+      "description": "Google Fonts ou URL de police personnalisée (optionnel)",
+      "default": ""
+    },
+    "fontFamily": {
+      "type": "text",
+      "label": "Font Family",
+      "description": "Nom de la famille de police à utiliser",
+      "default": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
     }
   }
 }

@@ -5,13 +5,14 @@
 class PrayerTimesWidget {
     constructor() {
         this.settings = {
-            city: 'Paris',
-            country: 'France',
+            geolocation: '48.8566,2.3522',
             displayCount: '2',
-            theme: 'modern',
             primaryColor: '#2d7c47',
-            showCurrentTime: true,
-            showCountdown: true
+            showCountdown: true,
+            showArabicNames: true,
+            showFrenchNames: true,
+            fontUrl: '',
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif'
         };
         
         this.dimensions = { width: 0, height: 0 };
@@ -38,6 +39,7 @@ class PrayerTimesWidget {
         this.setupEventListeners();
         this.updateCurrentTime();
         this.startTimeUpdates();
+        this.applyFontSettings();
         this.fetchPrayerTimes();
         this.applyResponsiveSize();
     }
@@ -92,8 +94,7 @@ class PrayerTimesWidget {
     
     // ⚙️ Update settings and apply changes
     updateSettings(newSettings) {
-        const oldCity = this.settings.city;
-        const oldCountry = this.settings.country;
+        const oldGeolocation = this.settings.geolocation;
         
         this.settings = { ...this.settings, ...newSettings };
         
@@ -102,40 +103,44 @@ class PrayerTimesWidget {
             document.documentElement.style.setProperty('--primary-color', newSettings.primaryColor);
         }
         
-        // Update location display
-        this.updateLocationDisplay();
+        // Apply font settings
+        if (newSettings.fontUrl || newSettings.fontFamily) {
+            this.applyFontSettings();
+        }
         
         // Reload prayer times if location changed
-        if (oldCity !== this.settings.city || oldCountry !== this.settings.country) {
+        if (oldGeolocation !== this.settings.geolocation) {
             this.fetchPrayerTimes();
         } else {
             this.displayPrayerTimes();
         }
     }
     
-    // 📍 Update location display
-    updateLocationDisplay() {
-        const locationEl = document.getElementById('location-display');
-        if (locationEl) {
-            locationEl.textContent = `${this.settings.city}, ${this.settings.country}`;
+    // 🎨 Apply font settings
+    applyFontSettings() {
+        if (this.settings.fontUrl) {
+            // Load custom font
+            const existingLink = document.querySelector('link[data-custom-font]');
+            if (existingLink) {
+                existingLink.remove();
+            }
+            
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = this.settings.fontUrl;
+            link.setAttribute('data-custom-font', 'true');
+            document.head.appendChild(link);
+        }
+        
+        // Apply font family
+        if (this.settings.fontFamily) {
+            document.body.style.fontFamily = this.settings.fontFamily;
         }
     }
     
-    // 🕒 Update current time and date
+    // 🕒 Update current time
     updateCurrentTime() {
         this.currentTime = new Date();
-        
-        // Update date display
-        const dateEl = document.getElementById('current-date-display');
-        if (dateEl) {
-            const dateStr = this.currentTime.toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            dateEl.textContent = dateStr;
-        }
         
         // Update countdown
         if (this.prayerTimes && this.settings.showCountdown) {
@@ -154,17 +159,56 @@ class PrayerTimesWidget {
         }, 1000);
     }
     
+    // 📍 Parse geolocation string
+    parseGeolocation(geoString) {
+        // Try parsing as coordinates first (lat,lng)
+        const coordsMatch = geoString.match(/^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/);
+        if (coordsMatch) {
+            return {
+                type: 'coordinates',
+                latitude: parseFloat(coordsMatch[1]),
+                longitude: parseFloat(coordsMatch[2])
+            };
+        }
+        
+        // Try parsing as city,country
+        const cityCountryMatch = geoString.match(/^(.+),\s*(.+)$/);
+        if (cityCountryMatch) {
+            return {
+                type: 'city',
+                city: cityCountryMatch[1].trim(),
+                country: cityCountryMatch[2].trim()
+            };
+        }
+        
+        // Default: treat as city name only
+        return {
+            type: 'city',
+            city: geoString.trim(),
+            country: ''
+        };
+    }
+
     // 🌐 Fetch prayer times from API
     async fetchPrayerTimes() {
         const statusOverlay = document.getElementById('status-overlay');
         const statusMessage = document.getElementById('status-message');
         
         statusOverlay.classList.remove('hidden');
-        statusMessage.textContent = `📍 Chargement des heures pour ${this.settings.city}...`;
+        statusMessage.textContent = '🕐 Chargement des heures de prière...';
         
         try {
             const today = new Date().toISOString().split('T')[0];
-            const url = `https://api.aladhan.com/v1/timingsByCity/${today}?city=${encodeURIComponent(this.settings.city)}&country=${encodeURIComponent(this.settings.country)}&method=2`;
+            const location = this.parseGeolocation(this.settings.geolocation);
+            let url;
+            
+            if (location.type === 'coordinates') {
+                url = `https://api.aladhan.com/v1/timings/${today}?latitude=${location.latitude}&longitude=${location.longitude}&method=2`;
+            } else {
+                const city = encodeURIComponent(location.city);
+                const country = location.country ? encodeURIComponent(location.country) : '';
+                url = `https://api.aladhan.com/v1/timingsByCity/${today}?city=${city}&country=${country}&method=2`;
+            }
             
             console.log('🌐 Fetching prayer times from:', url);
             const response = await fetch(url);
@@ -218,13 +262,20 @@ class PrayerTimesWidget {
             const time = this.prayerTimes[prayerKey];
             const isNext = index === 0 && this.settings.displayCount !== 'all';
             
+            let nameHtml = '';
+            if (this.settings.showFrenchNames) {
+                nameHtml += `<div class="prayer-name-en">${prayer.frenchName}</div>`;
+            }
+            if (this.settings.showArabicNames) {
+                nameHtml += `<div class="prayer-name-ar">${prayer.nameAr}</div>`;
+            }
+            
             return `
                 <div class="prayer-card ${isNext ? 'next-prayer' : ''}" style="animation-delay: ${index * 100}ms;">
                     <div class="prayer-info">
                         <div class="prayer-icon">${prayer.icon}</div>
                         <div class="prayer-names">
-                            <div class="prayer-name-en">${prayer.frenchName}</div>
-                            <div class="prayer-name-ar">${prayer.nameAr}</div>
+                            ${nameHtml}
                         </div>
                     </div>
                     <div class="prayer-time">${this.formatTime(time)}</div>
@@ -282,6 +333,15 @@ class PrayerTimesWidget {
         
         if (displayCount === 'all') {
             return prayers;
+        }
+        
+        if (displayCount === 'remaining') {
+            // Show only remaining prayers for today
+            const result = [];
+            for (let i = this.nextPrayerIndex; i < prayers.length; i++) {
+                result.push(prayers[i]);
+            }
+            return result;
         }
         
         const count = parseInt(displayCount);
