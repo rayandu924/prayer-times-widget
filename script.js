@@ -8,9 +8,11 @@ class PrayerTimesWidget {
             geolocation: '48.8566,2.3522',
             displayCount: '2',
             primaryColor: '#2d7c47',
+            secondaryColor: '#4ade80',
             showCountdown: true,
             showArabicNames: true,
-            showFrenchNames: true,
+            showLocalizedNames: true,
+            language: 'fr',
             fontUrl: '',
             fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif'
         };
@@ -22,14 +24,144 @@ class PrayerTimesWidget {
         this.nextPrayerIndex = -1;
         
         this.prayerNames = {
-            Fajr: { name: 'Fajr', nameAr: 'الفجر', icon: '🌅', frenchName: 'Fadjr', color: 'from-orange-400 to-pink-500' },
-            Dhuhr: { name: 'Dhuhr', nameAr: 'الظهر', icon: '☀️', frenchName: 'Dhohr', color: 'from-yellow-400 to-orange-500' },
-            Asr: { name: 'Asr', nameAr: 'العصر', icon: '🌤️', frenchName: 'Asr', color: 'from-amber-400 to-yellow-500' },
-            Maghrib: { name: 'Maghrib', nameAr: 'المغرب', icon: '🌅', frenchName: 'Maghreb', color: 'from-red-400 to-pink-500' },
-            Isha: { name: 'Isha', nameAr: 'العشاء', icon: '🌙', frenchName: 'Icha', color: 'from-purple-400 to-indigo-500' }
+            Fajr: { 
+                name: 'Fajr', 
+                nameAr: 'الفجر', 
+                icon: this.getSunriseIcon(), 
+                translations: {
+                    fr: 'Fadjr',
+                    en: 'Dawn',
+                    es: 'Alba',
+                    de: 'Morgendämmerung',
+                    it: 'Alba',
+                    tr: 'İmsak',
+                    ur: 'فجر'
+                }
+            },
+            Dhuhr: { 
+                name: 'Dhuhr', 
+                nameAr: 'الظهر', 
+                icon: this.getSunIcon(), 
+                translations: {
+                    fr: 'Dhohr',
+                    en: 'Noon',
+                    es: 'Mediodía',
+                    de: 'Mittag',
+                    it: 'Mezzogiorno',
+                    tr: 'Öğle',
+                    ur: 'ظہر'
+                }
+            },
+            Asr: { 
+                name: 'Asr', 
+                nameAr: 'العصر', 
+                icon: this.getSunIcon(), 
+                translations: {
+                    fr: 'Asr',
+                    en: 'Afternoon',
+                    es: 'Tarde',
+                    de: 'Nachmittag',
+                    it: 'Pomeriggio',
+                    tr: 'İkindi',
+                    ur: 'عصر'
+                }
+            },
+            Maghrib: { 
+                name: 'Maghrib', 
+                nameAr: 'المغرب', 
+                icon: this.getSunsetIcon(), 
+                translations: {
+                    fr: 'Maghreb',
+                    en: 'Sunset',
+                    es: 'Atardecer',
+                    de: 'Sonnenuntergang',
+                    it: 'Tramonto',
+                    tr: 'Akşam',
+                    ur: 'مغرب'
+                }
+            },
+            Isha: { 
+                name: 'Isha', 
+                nameAr: 'العشاء', 
+                icon: this.getMoonIcon(), 
+                translations: {
+                    fr: 'Icha',
+                    en: 'Night',
+                    es: 'Noche',
+                    de: 'Nacht',
+                    it: 'Notte',
+                    tr: 'Yatsı',
+                    ur: 'عشاء'
+                }
+            }
         };
         
         this.init();
+    }
+    
+    // 🎨 Lucide React SVG Icons
+    getSunriseIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sunrise">
+            <path d="m12 2 3 3-3 3-3-3z"/>
+            <path d="M6 18h12"/>
+            <path d="M6 22h12"/>
+            <path d="m16 6 4 4-4 4"/>
+            <path d="M8 6 4 10l4 4"/>
+            <rect width="4" height="4" x="10" y="6"/>
+        </svg>`;
+    }
+    
+    getSunIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+        </svg>`;
+    }
+    
+    getSunsetIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sunset">
+            <path d="M12 10V2"/>
+            <path d="m4.93 10.93 1.41 1.41"/>
+            <path d="M2 18h2"/>
+            <path d="M20 18h2"/>
+            <path d="m19.07 10.93-1.41 1.41"/>
+            <path d="M22 22H2"/>
+            <path d="m16 6-4 4-4-4"/>
+            <path d="m8 14 4 4 4-4"/>
+        </svg>`;
+    }
+    
+    getMoonIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>`;
+    }
+    
+    getClockIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+        </svg>`;
+    }
+    
+    getCountdownText() {
+        const countdownTexts = {
+            fr: 'dans',
+            en: 'in',
+            es: 'en',
+            de: 'in',
+            it: 'tra',
+            tr: 'kaldı',
+            ur: 'میں'
+        };
+        return countdownTexts[this.settings.language] || 'in';
     }
     
     init() {
@@ -39,6 +171,7 @@ class PrayerTimesWidget {
         this.setupEventListeners();
         this.updateCurrentTime();
         this.startTimeUpdates();
+        this.applyColors();
         this.applyFontSettings();
         this.fetchPrayerTimes();
         this.applyResponsiveSize();
@@ -96,9 +229,12 @@ class PrayerTimesWidget {
         
         this.settings = { ...this.settings, ...newSettings };
         
-        // Apply primary color dynamically
+        // Apply colors dynamically
         if (newSettings.primaryColor) {
             document.documentElement.style.setProperty('--primary-color', newSettings.primaryColor);
+        }
+        if (newSettings.secondaryColor) {
+            document.documentElement.style.setProperty('--primary-light', newSettings.secondaryColor);
         }
         
         // Apply font settings
@@ -112,6 +248,12 @@ class PrayerTimesWidget {
         } else {
             this.displayPrayerTimes();
         }
+    }
+    
+    // 🎨 Apply colors
+    applyColors() {
+        document.documentElement.style.setProperty('--primary-color', this.settings.primaryColor);
+        document.documentElement.style.setProperty('--primary-light', this.settings.secondaryColor);
     }
     
     // 🎨 Apply font settings
@@ -255,23 +397,24 @@ class PrayerTimesWidget {
         const prayersToShow = this.getPrayersToShow(prayers);
         
         // Generate prayer cards in REVERSE order + countdown at the end (bottom)
-        let cardsHtml = '';
+        let cardsArray = [];
         
         // Add regular prayer cards in REVERSE order (prochaines prières en bas)
         const reversedPrayers = [...prayersToShow].reverse();
-        cardsHtml += reversedPrayers.map((prayerKey, index) => {
+        reversedPrayers.forEach((prayerKey, index) => {
             const prayer = this.prayerNames[prayerKey];
             const time = this.prayerTimes[prayerKey];
             
             let nameHtml = '';
-            if (this.settings.showFrenchNames) {
-                nameHtml += `<div class="prayer-name-en">${prayer.frenchName}</div>`;
+            if (this.settings.showLocalizedNames) {
+                const localizedName = prayer.translations[this.settings.language] || prayer.name;
+                nameHtml += `<div class="prayer-name-en">${localizedName}</div>`;
             }
             if (this.settings.showArabicNames) {
                 nameHtml += `<div class="prayer-name-ar">${prayer.nameAr}</div>`;
             }
             
-            return `
+            cardsArray.push(`
                 <div class="prayer-card" style="animation-delay: ${index * 100}ms;">
                     <div class="prayer-info">
                         <div class="prayer-icon">${prayer.icon}</div>
@@ -281,8 +424,8 @@ class PrayerTimesWidget {
                     </div>
                     <div class="prayer-time">${this.formatTime(time)}</div>
                 </div>
-            `;
-        }).join('');
+            `);
+        });
         
         // Add countdown as LAST rectangle (tout en bas) if enabled
         if (this.settings.showCountdown && this.nextPrayerIndex >= 0) {
@@ -290,27 +433,38 @@ class PrayerTimesWidget {
             const nextPrayer = this.prayerNames[nextPrayerKey];
             
             let countdownNameHtml = '';
-            if (this.settings.showFrenchNames) {
-                countdownNameHtml += `<div class="prayer-name-en">${nextPrayer.frenchName} dans</div>`;
+            if (this.settings.showLocalizedNames) {
+                const localizedName = nextPrayer.translations[this.settings.language] || nextPrayer.name;
+                const inText = this.getCountdownText();
+                countdownNameHtml += `<div class="prayer-name-en">${localizedName} ${inText}</div>`;
             }
             if (this.settings.showArabicNames) {
                 countdownNameHtml += `<div class="prayer-name-ar">${nextPrayer.nameAr}</div>`;
             }
             
-            cardsHtml += `
-                <div class="prayer-card next-prayer countdown-card">
+            cardsArray.push(`
+                <div class="prayer-card countdown-card">
                     <div class="prayer-info">
-                        <div class="prayer-icon">⏰</div>
+                        <div class="prayer-icon">${this.getClockIcon()}</div>
                         <div class="prayer-names">
                             ${countdownNameHtml}
                         </div>
                     </div>
                     <div class="prayer-time" id="countdown-display">--:--:--</div>
                 </div>
-            `;
+            `);
         }
         
-        prayersListEl.innerHTML = cardsHtml;
+        // Apply "last-rectangle" class to the last element (bottom-most)
+        if (cardsArray.length > 0) {
+            const lastIndex = cardsArray.length - 1;
+            cardsArray[lastIndex] = cardsArray[lastIndex].replace(
+                'class="prayer-card', 
+                'class="prayer-card last-rectangle'
+            );
+        }
+        
+        prayersListEl.innerHTML = cardsArray.join('');
     }
     
     // 🔍 Find next prayer

@@ -1,7 +1,7 @@
 {
   "name": "Widget Heures de Prière",
   "description": "Ordre logique inversé + countdown au sol - Prochaines prières en bas, collées au sol, interface parfaite",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "author": {
     "name": "Rayan",
     "github": "rayandu924"
@@ -32,8 +32,14 @@
     "primaryColor": {
       "type": "color",
       "label": "Couleur principale",
-      "description": "Couleur d'accentuation du widget",
+      "description": "Couleur principale pour les rebords et éléments",
       "default": "#2d7c47"
+    },
+    "secondaryColor": {
+      "type": "color",
+      "label": "Couleur secondaire",
+      "description": "Couleur secondaire pour les gradients et effets",
+      "default": "#4ade80"
     },
     "showCountdown": {
       "type": "boolean", 
@@ -47,11 +53,26 @@
       "description": "Afficher la traduction arabe des prières",
       "default": true
     },
-    "showFrenchNames": {
+    "showLocalizedNames": {
       "type": "boolean",
-      "label": "Afficher noms français", 
-      "description": "Afficher la traduction française des prières",
+      "label": "Afficher noms localisés",
+      "description": "Afficher les noms des prières dans la langue choisie",
       "default": true
+    },
+    "language": {
+      "type": "select",
+      "label": "Langue principale",
+      "description": "Langue d'affichage pour les noms des prières",
+      "default": "fr",
+      "options": [
+        {"value": "fr", "label": "Français"},
+        {"value": "en", "label": "English"},
+        {"value": "es", "label": "Español"},
+        {"value": "de", "label": "Deutsch"},
+        {"value": "it", "label": "Italiano"},
+        {"value": "tr", "label": "Türkçe"},
+        {"value": "ur", "label": "اردو"}
+      ]
     },
     "fontUrl": {
       "type": "url",

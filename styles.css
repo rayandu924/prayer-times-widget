@@ -13,19 +13,19 @@ html, body {
     background: transparent;
 }
 
-/* Variables CSS pour les couleurs dynamiques */
+/* Variables CSS pour les couleurs dynamiques - AUCUNE couleur hardcodée */
 :root {
-    --primary-color: #2d7c47;
-    --primary-light: #4ade80;
-    --accent-color: #f59e0b;
-    --text-primary: #ffffff;
-    --text-secondary: #e5e7eb;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --card-border: rgba(255, 255, 255, 0.1);
+    --primary-color: #2d7c47;  /* Sera remplacé dynamiquement */
+    --primary-light: #4ade80;  /* Sera remplacé dynamiquement */
+    --accent-color: #f59e0b;   /* Orange pour les accents (loading, etc.) */
+    --text-primary: #ffffff;   /* Blanc pour le texte principal */
+    --text-secondary: #e5e7eb; /* Gris clair pour le texte secondaire */
+    --card-bg: rgba(255, 255, 255, 0.05);      /* Glass morphism transparent */
+    --card-border: rgba(255, 255, 255, 0.1);   /* Bordure glass morphism */
     --gradient-1: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-    --gradient-2: linear-gradient(135deg, var(--accent-color), #f97316);
-    --shadow-primary: rgba(45, 124, 71, 0.3);
-    --shadow-accent: rgba(245, 158, 11, 0.3);
+    --gradient-2: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    --shadow-primary: color-mix(in srgb, var(--primary-color) 30%, transparent);
+    --shadow-accent: color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 /* Container principal */
@@ -39,49 +39,6 @@ html, body {
     background: transparent;
 }
 
-/* Effets d'arrière-plan */
-.background-effects {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.bg-effect {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(40px);
-    animation: pulse 4s ease-in-out infinite;
-}
-
-.bg-effect-1 {
-    top: 10%;
-    left: 10%;
-    width: 120px;
-    height: 120px;
-    background: var(--gradient-1);
-    opacity: 0.2;
-}
-
-.bg-effect-2 {
-    bottom: 20%;
-    right: 10%;
-    width: 90px;
-    height: 90px;
-    background: var(--gradient-2);
-    opacity: 0.15;
-    animation-delay: 2s;
-}
-
-.bg-effect-3 {
-    top: 50%;
-    left: 20%;
-    width: 60px;
-    height: 60px;
-    background: var(--gradient-1);
-    opacity: 0.1;
-    animation-delay: 1s;
-}
 
 /* Contenu principal - rectangles collés au sol */
 .prayer-content {
@@ -274,9 +231,9 @@ html, body {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.prayer-card.next-prayer {
+.prayer-card.last-rectangle {
     border: 2px solid var(--primary-color);
-    background: rgba(45, 124, 71, 0.1);
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
     transform: scale(1.02);
 }
 
@@ -297,6 +254,13 @@ html, body {
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 16px var(--shadow-primary);
+}
+
+.prayer-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--text-primary);
+    stroke: currentColor;
 }
 
 .prayer-names {
