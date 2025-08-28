@@ -254,10 +254,37 @@ class PrayerTimesWidget {
         // Get prayers to show based on settings
         const prayersToShow = this.getPrayersToShow(prayers);
         
-        // Generate countdown as first rectangle + prayer cards
+        // Generate prayer cards in REVERSE order + countdown at the end (bottom)
         let cardsHtml = '';
         
-        // Add countdown as first rectangle if enabled
+        // Add regular prayer cards in REVERSE order (prochaines prières en bas)
+        const reversedPrayers = [...prayersToShow].reverse();
+        cardsHtml += reversedPrayers.map((prayerKey, index) => {
+            const prayer = this.prayerNames[prayerKey];
+            const time = this.prayerTimes[prayerKey];
+            
+            let nameHtml = '';
+            if (this.settings.showFrenchNames) {
+                nameHtml += `<div class="prayer-name-en">${prayer.frenchName}</div>`;
+            }
+            if (this.settings.showArabicNames) {
+                nameHtml += `<div class="prayer-name-ar">${prayer.nameAr}</div>`;
+            }
+            
+            return `
+                <div class="prayer-card" style="animation-delay: ${index * 100}ms;">
+                    <div class="prayer-info">
+                        <div class="prayer-icon">${prayer.icon}</div>
+                        <div class="prayer-names">
+                            ${nameHtml}
+                        </div>
+                    </div>
+                    <div class="prayer-time">${this.formatTime(time)}</div>
+                </div>
+            `;
+        }).join('');
+        
+        // Add countdown as LAST rectangle (tout en bas) if enabled
         if (this.settings.showCountdown && this.nextPrayerIndex >= 0) {
             const nextPrayerKey = prayers[this.nextPrayerIndex];
             const nextPrayer = this.prayerNames[nextPrayerKey];
@@ -282,32 +309,6 @@ class PrayerTimesWidget {
                 </div>
             `;
         }
-        
-        // Add regular prayer cards
-        cardsHtml += prayersToShow.map((prayerKey, index) => {
-            const prayer = this.prayerNames[prayerKey];
-            const time = this.prayerTimes[prayerKey];
-            
-            let nameHtml = '';
-            if (this.settings.showFrenchNames) {
-                nameHtml += `<div class="prayer-name-en">${prayer.frenchName}</div>`;
-            }
-            if (this.settings.showArabicNames) {
-                nameHtml += `<div class="prayer-name-ar">${prayer.nameAr}</div>`;
-            }
-            
-            return `
-                <div class="prayer-card" style="animation-delay: ${(index + 1) * 100}ms;">
-                    <div class="prayer-info">
-                        <div class="prayer-icon">${prayer.icon}</div>
-                        <div class="prayer-names">
-                            ${nameHtml}
-                        </div>
-                    </div>
-                    <div class="prayer-time">${this.formatTime(time)}</div>
-                </div>
-            `;
-        }).join('');
         
         prayersListEl.innerHTML = cardsHtml;
     }

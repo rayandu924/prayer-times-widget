@@ -1,7 +1,7 @@
 {
   "name": "Widget Heures de Prière",
-  "description": "Rectangles uniformes alignés en bas - Countdown intégré, scaling parfait, interface cohérente",
-  "version": "3.3.0",
+  "description": "Ordre logique inversé + countdown au sol - Prochaines prières en bas, collées au sol, interface parfaite",
+  "version": "3.4.0",
   "author": {
     "name": "Rayan",
     "github": "rayandu924"

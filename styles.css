@@ -83,7 +83,7 @@ html, body {
     animation-delay: 1s;
 }
 
-/* Contenu principal - scaling uniforme aligné en bas */
+/* Contenu principal - rectangles collés au sol */
 .prayer-content {
     width: 400px;  /* Taille de référence fixe pour scaling */
     height: 600px; /* Taille de référence fixe pour scaling */
@@ -96,7 +96,7 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;  /* Aligner en bas */
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem;  /* Pas de padding en bas pour coller au sol */
     box-sizing: border-box;
 }
 
@@ -231,13 +231,13 @@ html, body {
     animation: pulse 1s ease-in-out infinite;
 }
 
-/* Grille des prières */
+/* Grille des prières - collée en bas */
 .prayers-grid {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     flex: 1;
-    justify-content: center;
+    justify-content: flex-end;  /* Rectangles collés en bas */
 }
 
 .prayer-card {
