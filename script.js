@@ -51,16 +51,26 @@ class PrayerTimesWidget {
     }
     
     applyResponsiveSize() {
-        // Magic formula: 100% of smallest dimension for perfect scaling
+        // 100% responsive - utilise directement les dimensions sans limitation
         const fontSize = Math.min(this.dimensions.width, this.dimensions.height);
         
-        // Apply responsive scaling to main content
-        const content = document.querySelector('.prayer-content');
-        if (content) {
-            const scaleFactor = fontSize / 800; // Base scale for 800px
-            content.style.transform = `scale(${Math.max(scaleFactor, 0.5)})`;
-            content.style.transformOrigin = 'center center';
+        // Plus de transform scaling - le contenu s'adapte naturellement
+        // Applique la taille directement aux éléments textuels importants
+        const mainTitle = document.querySelector('.main-title');
+        const countdownDisplay = document.querySelector('.next-prayer-countdown');
+        const prayerTimes = document.querySelectorAll('.prayer-time');
+        
+        if (mainTitle) {
+            mainTitle.style.fontSize = `${fontSize * 0.1}px`;
         }
+        
+        if (countdownDisplay) {
+            countdownDisplay.style.fontSize = `${fontSize * 0.08}px`;
+        }
+        
+        prayerTimes.forEach(time => {
+            time.style.fontSize = `${fontSize * 0.06}px`;
+        });
     }
     
     setupEventListeners() {
