@@ -3,34 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Heures de Prière</title>
+    <title>Heures de Prière - MyWallpaper</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="prayer-widget" class="widget-container">
-        <!-- Header avec heure actuelle -->
-        <div id="current-time-section" class="current-time-section">
-            <div class="current-time" id="current-time">--:--</div>
-            <div class="current-date" id="current-date">-- --- ----</div>
+    <div class="prayer-widget-container">
+        <!-- Arrière-plan avec effets -->
+        <div class="background-effects">
+            <div class="bg-effect bg-effect-1"></div>
+            <div class="bg-effect bg-effect-2"></div>
+            <div class="bg-effect bg-effect-3"></div>
         </div>
 
-        <!-- Section prochaines prières -->
-        <div id="prayers-section" class="prayers-section">
-            <div class="section-title">🕌 Prochaines Prières</div>
-            <div id="prayers-list" class="prayers-list">
-                <!-- Les prières seront injectées ici par JavaScript -->
+        <div class="prayer-content">
+            <!-- En-tête avec titre et décoration -->
+            <div class="header-section">
+                <div class="header-decoration">
+                    <div class="star star-1">✦</div>
+                    <div class="divider"></div>
+                    <div class="star star-2">★</div>
+                    <div class="divider"></div>
+                    <div class="star star-3">✦</div>
+                </div>
+                
+                <h1 class="main-title">أوقات الصلاة</h1>
+                <p class="subtitle">Horaires de Prière</p>
+                
+                <!-- Localisation et date -->
+                <div class="location-info">
+                    <div class="location-line">
+                        <span class="location-icon">📍</span>
+                        <span class="location-text" id="location-display">Paris, France</span>
+                    </div>
+                    <div class="date-line">
+                        <span class="date-icon">📅</span>
+                        <span class="date-text" id="current-date-display">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prochaine prière (mise en avant) -->
+            <div id="next-prayer-card" class="next-prayer-card">
+                <div class="next-prayer-bg"></div>
+                <div class="next-prayer-content">
+                    <div class="next-prayer-header">
+                        <div class="clock-icon">🕐</div>
+                        <span class="next-prayer-label" id="next-prayer-name">Prochaine prière</span>
+                    </div>
+                    <div class="next-prayer-countdown" id="countdown-display">--:--:--</div>
+                </div>
+            </div>
+
+            <!-- Liste des prières -->
+            <div class="prayers-grid" id="prayers-list">
+                <!-- Les cartes de prières seront injectées ici -->
+            </div>
+
+            <!-- Pied de page -->
+            <div class="footer-section">
+                <div class="footer-decoration">
+                    <div class="footer-line"></div>
+                    <div class="footer-star">★</div>
+                    <div class="footer-line"></div>
+                </div>
+                <p class="calculation-method">Calculé selon la méthode islamique</p>
+                <div class="realtime-indicator">
+                    <div class="pulse-dot"></div>
+                    <span class="realtime-text">Mise à jour en temps réel</span>
+                    <div class="pulse-dot"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Compte à rebours -->
-        <div id="countdown-section" class="countdown-section">
-            <div class="countdown-label">Prochaine prière dans</div>
-            <div class="countdown-time" id="countdown-time">--:--:--</div>
-        </div>
-
         <!-- Status/Loading -->
-        <div id="status" class="status-message">
-            📍 Chargement des heures de prière...
+        <div id="status-overlay" class="status-overlay">
+            <div class="status-content">
+                <div class="loading-spinner"></div>
+                <div id="status-message" class="status-message">Chargement des heures de prière...</div>
+            </div>
         </div>
     </div>
 

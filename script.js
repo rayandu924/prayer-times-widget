@@ -1,5 +1,6 @@
-// 🕌 Widget Heures de Prière - MyWallpaper Addon
-// Gestion des heures de prière avec API et mise à jour temps réel
+// 🕌 Prayer Times Widget - Beautiful Modern Interface
+// Inspired by React component with ultra-simple responsive sizing
+// Maintains external settings integration for MyWallpaper
 
 class PrayerTimesWidget {
     constructor() {
@@ -13,31 +14,63 @@ class PrayerTimesWidget {
             showCountdown: true
         };
         
+        this.dimensions = { width: 0, height: 0 };
         this.prayerTimes = null;
         this.currentTime = new Date();
         this.updateInterval = null;
         this.nextPrayerIndex = -1;
         
         this.prayerNames = {
-            Fajr: { name: 'Fajr', icon: '🌅', frenchName: 'Fadjr' },
-            Dhuhr: { name: 'Dhuhr', icon: '☀️', frenchName: 'Dhohr' },
-            Asr: { name: 'Asr', icon: '🌤️', frenchName: 'Asr' },
-            Maghrib: { name: 'Maghrib', icon: '🌅', frenchName: 'Maghreb' },
-            Isha: { name: 'Isha', icon: '🌙', frenchName: 'Icha' }
+            Fajr: { name: 'Fajr', nameAr: 'الفجر', icon: '🌅', frenchName: 'Fadjr', color: 'from-orange-400 to-pink-500' },
+            Dhuhr: { name: 'Dhuhr', nameAr: 'الظهر', icon: '☀️', frenchName: 'Dhohr', color: 'from-yellow-400 to-orange-500' },
+            Asr: { name: 'Asr', nameAr: 'العصر', icon: '🌤️', frenchName: 'Asr', color: 'from-amber-400 to-yellow-500' },
+            Maghrib: { name: 'Maghrib', nameAr: 'المغرب', icon: '🌅', frenchName: 'Maghreb', color: 'from-red-400 to-pink-500' },
+            Isha: { name: 'Isha', nameAr: 'العشاء', icon: '🌙', frenchName: 'Icha', color: 'from-purple-400 to-indigo-500' }
         };
         
         this.init();
     }
     
     init() {
-        console.log('🕌 Prayer Times Widget initializing...');
+        console.log('🕌 Beautiful Prayer Times Widget initializing...');
+        this.updateDimensions();
         this.setupMessageListener();
+        this.setupEventListeners();
         this.updateCurrentTime();
         this.startTimeUpdates();
         this.fetchPrayerTimes();
+        this.applyResponsiveSize();
+    }
+
+    // Ultra-simple responsive technique - same as time/date display addons
+    updateDimensions() {
+        this.dimensions = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
     }
     
-    // 📡 Écouter les messages de configuration de MyWallpaper
+    applyResponsiveSize() {
+        // Magic formula: 100% of smallest dimension for perfect scaling
+        const fontSize = Math.min(this.dimensions.width, this.dimensions.height);
+        
+        // Apply responsive scaling to main content
+        const content = document.querySelector('.prayer-content');
+        if (content) {
+            const scaleFactor = fontSize / 800; // Base scale for 800px
+            content.style.transform = `scale(${Math.max(scaleFactor, 0.5)})`;
+            content.style.transformOrigin = 'center center';
+        }
+    }
+    
+    setupEventListeners() {
+        window.addEventListener('resize', () => {
+            this.updateDimensions();
+            this.applyResponsiveSize();
+        });
+    }
+    
+    // 📡 Listen for MyWallpaper settings updates
     setupMessageListener() {
         window.addEventListener('message', (event) => {
             if (event.data.type === 'SETTINGS_UPDATE' && event.data.source === 'MyWallpaperHost') {
@@ -47,75 +80,60 @@ class PrayerTimesWidget {
         });
     }
     
-    // ⚙️ Mettre à jour les paramètres
+    // ⚙️ Update settings and apply changes
     updateSettings(newSettings) {
         const oldCity = this.settings.city;
         const oldCountry = this.settings.country;
         
         this.settings = { ...this.settings, ...newSettings };
         
-        // Appliquer le thème
-        this.applyTheme();
+        // Apply primary color dynamically
+        if (newSettings.primaryColor) {
+            document.documentElement.style.setProperty('--primary-color', newSettings.primaryColor);
+        }
         
-        // Mettre à jour la couleur principale
-        document.documentElement.style.setProperty('--primary-color', this.settings.primaryColor);
+        // Update location display
+        this.updateLocationDisplay();
         
-        // Afficher/cacher les sections selon les paramètres
-        this.toggleSections();
-        
-        // Recharger les heures de prière si la localisation a changé
+        // Reload prayer times if location changed
         if (oldCity !== this.settings.city || oldCountry !== this.settings.country) {
             this.fetchPrayerTimes();
         } else {
-            // Juste rafraîchir l'affichage
             this.displayPrayerTimes();
         }
     }
     
-    // 🎨 Appliquer le thème
-    applyTheme() {
-        const container = document.getElementById('prayer-widget');
-        container.className = `widget-container theme-${this.settings.theme}`;
+    // 📍 Update location display
+    updateLocationDisplay() {
+        const locationEl = document.getElementById('location-display');
+        if (locationEl) {
+            locationEl.textContent = `${this.settings.city}, ${this.settings.country}`;
+        }
     }
     
-    // 👁️ Afficher/cacher les sections
-    toggleSections() {
-        const currentTimeSection = document.getElementById('current-time-section');
-        const countdownSection = document.getElementById('countdown-section');
-        
-        currentTimeSection.classList.toggle('hidden', !this.settings.showCurrentTime);
-        countdownSection.classList.toggle('hidden', !this.settings.showCountdown);
-    }
-    
-    // 🕒 Mettre à jour l'heure actuelle
+    // 🕒 Update current time and date
     updateCurrentTime() {
         this.currentTime = new Date();
         
-        if (this.settings.showCurrentTime) {
-            const timeStr = this.currentTime.toLocaleTimeString('fr-FR', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            
+        // Update date display
+        const dateEl = document.getElementById('current-date-display');
+        if (dateEl) {
             const dateStr = this.currentTime.toLocaleDateString('fr-FR', {
                 weekday: 'long',
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
             });
-            
-            document.getElementById('current-time').textContent = timeStr;
-            document.getElementById('current-date').textContent = dateStr;
+            dateEl.textContent = dateStr;
         }
         
-        // Mettre à jour le compte à rebours
+        // Update countdown
         if (this.prayerTimes && this.settings.showCountdown) {
             this.updateCountdown();
         }
     }
     
-    // ⏱️ Démarrer les mises à jour temps réel
+    // ⏱️ Start real-time updates
     startTimeUpdates() {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
@@ -126,14 +144,15 @@ class PrayerTimesWidget {
         }, 1000);
     }
     
-    // 🌐 Récupérer les heures de prière depuis l'API
+    // 🌐 Fetch prayer times from API
     async fetchPrayerTimes() {
-        const statusEl = document.getElementById('status');
-        statusEl.textContent = `📍 Chargement des heures pour ${this.settings.city}...`;
-        statusEl.className = 'status-message';
+        const statusOverlay = document.getElementById('status-overlay');
+        const statusMessage = document.getElementById('status-message');
+        
+        statusOverlay.classList.remove('hidden');
+        statusMessage.textContent = `📍 Chargement des heures pour ${this.settings.city}...`;
         
         try {
-            // API gratuite pour les heures de prière
             const today = new Date().toISOString().split('T')[0];
             const url = `https://api.aladhan.com/v1/timingsByCity/${today}?city=${encodeURIComponent(this.settings.city)}&country=${encodeURIComponent(this.settings.country)}&method=2`;
             
@@ -154,50 +173,76 @@ class PrayerTimesWidget {
             console.log('✅ Prayer times loaded:', this.prayerTimes);
             
             this.displayPrayerTimes();
-            statusEl.textContent = `✅ ${this.settings.city}, ${this.settings.country}`;
-            statusEl.className = 'status-message success';
+            
+            // Hide status overlay
+            statusOverlay.classList.add('hidden');
             
         } catch (error) {
             console.error('❌ Error fetching prayer times:', error);
-            statusEl.textContent = '❌ Erreur de chargement des heures de prière';
-            statusEl.className = 'status-message error';
+            statusMessage.textContent = '❌ Erreur de chargement des heures de prière';
             
-            // Afficher des heures exemple en cas d'erreur
-            this.showFallbackTimes();
+            // Show fallback times after a delay
+            setTimeout(() => {
+                this.showFallbackTimes();
+                statusOverlay.classList.add('hidden');
+            }, 2000);
         }
     }
     
-    // 📱 Afficher les heures de prière
+    // 📱 Display beautiful prayer times
     displayPrayerTimes() {
         if (!this.prayerTimes) return;
         
         const prayersListEl = document.getElementById('prayers-list');
         const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
         
-        // Trouver la prochaine prière
+        // Find next prayer
         this.findNextPrayer(prayers);
         
-        // Générer la liste selon les paramètres
+        // Get prayers to show based on settings
         const prayersToShow = this.getPrayersToShow(prayers);
         
+        // Generate beautiful prayer cards
         prayersListEl.innerHTML = prayersToShow.map((prayerKey, index) => {
             const prayer = this.prayerNames[prayerKey];
             const time = this.prayerTimes[prayerKey];
             const isNext = index === 0 && this.settings.displayCount !== 'all';
             
             return `
-                <div class="prayer-item ${isNext ? 'next-prayer' : ''}">
-                    <div class="prayer-name">
-                        <span class="prayer-icon">${prayer.icon}</span>
-                        <span>${prayer.frenchName}</span>
+                <div class="prayer-card ${isNext ? 'next-prayer' : ''}" style="animation-delay: ${index * 100}ms;">
+                    <div class="prayer-info">
+                        <div class="prayer-icon">${prayer.icon}</div>
+                        <div class="prayer-names">
+                            <div class="prayer-name-en">${prayer.frenchName}</div>
+                            <div class="prayer-name-ar">${prayer.nameAr}</div>
+                        </div>
                     </div>
                     <div class="prayer-time">${this.formatTime(time)}</div>
                 </div>
             `;
         }).join('');
+        
+        // Update next prayer card
+        this.updateNextPrayerCard(prayers);
     }
     
-    // 🔍 Trouver la prochaine prière
+    // 📋 Update next prayer highlight card
+    updateNextPrayerCard(prayers) {
+        const nextPrayerCard = document.getElementById('next-prayer-card');
+        const nextPrayerName = document.getElementById('next-prayer-name');
+        
+        if (this.nextPrayerIndex >= 0 && this.nextPrayerIndex < prayers.length) {
+            const nextPrayerKey = prayers[this.nextPrayerIndex];
+            const prayer = this.prayerNames[nextPrayerKey];
+            
+            nextPrayerName.textContent = `${prayer.frenchName} dans`;
+            nextPrayerCard.style.display = 'block';
+        } else {
+            nextPrayerCard.style.display = 'none';
+        }
+    }
+    
+    // 🔍 Find next prayer
     findNextPrayer(prayers) {
         const now = new Date();
         const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
@@ -215,13 +260,13 @@ class PrayerTimesWidget {
             }
         }
         
-        // Si aucune prière trouvée aujourd'hui, la prochaine est Fajr du lendemain
+        // If no prayer found today, next is Fajr tomorrow
         if (this.nextPrayerIndex === -1) {
             this.nextPrayerIndex = 0; // Fajr
         }
     }
     
-    // 📋 Obtenir les prières à afficher selon les paramètres
+    // 📋 Get prayers to show based on settings
     getPrayersToShow(prayers) {
         const displayCount = this.settings.displayCount;
         
@@ -232,7 +277,7 @@ class PrayerTimesWidget {
         const count = parseInt(displayCount);
         const result = [];
         
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < Math.min(count, prayers.length); i++) {
             const index = (this.nextPrayerIndex + i) % prayers.length;
             result.push(prayers[index]);
         }
@@ -240,7 +285,7 @@ class PrayerTimesWidget {
         return result;
     }
     
-    // ⏰ Mettre à jour le compte à rebours
+    // ⏰ Update countdown display
     updateCountdown() {
         if (this.nextPrayerIndex === -1 || !this.prayerTimes) return;
         
@@ -252,7 +297,7 @@ class PrayerTimesWidget {
         const nextPrayerDate = new Date();
         nextPrayerDate.setHours(hours, minutes, 0, 0);
         
-        // Si l'heure est passée, c'est pour demain
+        // If time has passed, it's for tomorrow
         if (nextPrayerDate <= this.currentTime) {
             nextPrayerDate.setDate(nextPrayerDate.getDate() + 1);
         }
@@ -264,18 +309,27 @@ class PrayerTimesWidget {
             const minutesLeft = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
             const secondsLeft = Math.floor((timeDiff % (1000 * 60)) / 1000);
             
-            const countdownStr = `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
-            document.getElementById('countdown-time').textContent = countdownStr;
+            let countdownStr;
+            if (hoursLeft > 0) {
+                countdownStr = `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+            } else {
+                countdownStr = `${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+            }
+            
+            const countdownEl = document.getElementById('countdown-display');
+            if (countdownEl) {
+                countdownEl.textContent = countdownStr;
+            }
         }
     }
     
-    // 🕐 Formater l'heure
+    // 🕐 Format time display
     formatTime(timeStr) {
         const [hours, minutes] = timeStr.split(':');
         return `${hours}:${minutes}`;
     }
     
-    // 🆘 Afficher des heures d'exemple en cas d'erreur
+    // 🆘 Show fallback times on error
     showFallbackTimes() {
         this.prayerTimes = {
             Fajr: '05:30',
@@ -287,7 +341,7 @@ class PrayerTimesWidget {
         this.displayPrayerTimes();
     }
     
-    // 🧹 Nettoyage
+    // 🧹 Cleanup
     destroy() {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
@@ -295,14 +349,14 @@ class PrayerTimesWidget {
     }
 }
 
-// 🚀 Initialisation
+// 🚀 Initialize beautiful prayer widget
 let prayerWidget = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     prayerWidget = new PrayerTimesWidget();
 });
 
-// Nettoyage lors de la fermeture
+// Cleanup on page unload
 window.addEventListener('beforeunload', () => {
     if (prayerWidget) {
         prayerWidget.destroy();

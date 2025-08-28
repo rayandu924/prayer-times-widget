@@ -1,243 +1,464 @@
-/* Variables CSS pour thèmes dynamiques */
-:root {
-  --primary-color: #2d7c47;
-  --bg-color: rgba(0, 0, 0, 0.8);
-  --text-color: #ffffff;
-  --accent-color: rgba(45, 124, 71, 0.2);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
+/* Reset et base */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: transparent;
-  color: var(--text-color);
-  overflow: hidden;
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: transparent;
 }
 
-.widget-container {
-  background: transparent;
-  backdrop-filter: blur(3.2vmin);
-  border-radius: 2.6vmin;
-  border: 0.16vmin solid var(--border-color);
-  box-shadow: 0 1.3vmin 5.1vmin rgba(0, 0, 0, 0.3);
-  padding: 3.2vmin;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 2.6vmin;
-  position: relative;
+/* Variables CSS pour les couleurs dynamiques */
+:root {
+    --primary-color: #2d7c47;
+    --primary-light: #4ade80;
+    --accent-color: #f59e0b;
+    --text-primary: #ffffff;
+    --text-secondary: #e5e7eb;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --gradient-1: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    --gradient-2: linear-gradient(135deg, var(--accent-color), #f97316);
+    --shadow-primary: rgba(45, 124, 71, 0.3);
+    --shadow-accent: rgba(245, 158, 11, 0.3);
 }
 
-/* Section heure actuelle */
-.current-time-section {
-  text-align: center;
-  padding: 1.6vmin;
-  border-radius: 1.9vmin;
-  background: var(--accent-color);
-  border: 0.16vmin solid var(--primary-color);
+/* Container principal */
+.prayer-widget-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
 }
 
-.current-time {
-  font-size: 3.2vmin;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 0.64vmin;
-  font-family: 'Courier New', monospace;
+/* Effets d'arrière-plan */
+.background-effects {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
 }
 
-.current-date {
-  font-size: 1.4vmin;
-  opacity: 0.8;
-  color: var(--text-color);
+.bg-effect {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: pulse 4s ease-in-out infinite;
 }
 
-/* Section prières */
-.prayers-section {
-  flex: 1;
+.bg-effect-1 {
+    top: 10%;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    background: var(--gradient-1);
+    opacity: 0.2;
 }
 
-.section-title {
-  font-size: 1.8vmin;
-  font-weight: 600;
-  margin-bottom: 1.9vmin;
-  color: var(--primary-color);
-  text-align: center;
+.bg-effect-2 {
+    bottom: 20%;
+    right: 10%;
+    width: 90px;
+    height: 90px;
+    background: var(--gradient-2);
+    opacity: 0.15;
+    animation-delay: 2s;
 }
 
-.prayers-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.3vmin;
+.bg-effect-3 {
+    top: 50%;
+    left: 20%;
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-1);
+    opacity: 0.1;
+    animation-delay: 1s;
 }
 
-.prayer-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.9vmin 2.6vmin;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 1.3vmin;
-  border: 0.16vmin solid var(--border-color);
-  transition: all 0.3s ease;
+/* Contenu principal */
+.prayer-content {
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.prayer-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--primary-color);
+/* En-tête */
+.header-section {
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
-.prayer-item.next-prayer {
-  background: var(--accent-color);
-  border-color: var(--primary-color);
-  box-shadow: 0 0 20px rgba(45, 124, 71, 0.3);
+.header-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
-.prayer-name {
-  display: flex;
-  align-items: center;
-  gap: 1.3vmin;
-  font-weight: 500;
-  font-size: 1.6vmin;
+.star {
+    color: var(--primary-light);
+    font-size: 1.5rem;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.star-1 { animation-delay: 0s; }
+.star-2 { animation-delay: 0.7s; }
+.star-3 { animation-delay: 1.4s; }
+
+.divider {
+    width: 2rem;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--gradient-1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    animation: glow 3s ease-in-out infinite;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    opacity: 0.9;
+}
+
+/* Informations de localisation */
+.location-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.location-line, .date-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.location-icon, .date-icon {
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.location-text {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Carte de la prochaine prière */
+.next-prayer-card {
+    position: relative;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 8px 32px var(--shadow-primary);
+}
+
+.next-prayer-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-1);
+    opacity: 0.1;
+    border-radius: 1rem;
+}
+
+.next-prayer-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.next-prayer-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.clock-icon {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.next-prayer-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+.next-prayer-countdown {
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: var(--text-primary);
+    letter-spacing: 0.1rem;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+/* Grille des prières */
+.prayers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.prayer-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 0.875rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.prayer-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 0.875rem;
+}
+
+.prayer-card:hover::before {
+    opacity: 0.05;
+}
+
+.prayer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px var(--shadow-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.prayer-card.next-prayer {
+    border: 2px solid var(--primary-color);
+    background: rgba(45, 124, 71, 0.1);
+    transform: scale(1.02);
+}
+
+.prayer-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
 }
 
 .prayer-icon {
-  font-size: 1.9vmin;
+    font-size: 1.5rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--gradient-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px var(--shadow-primary);
+}
+
+.prayer-names {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.prayer-name-en {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--text-primary);
+}
+
+.prayer-name-ar {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    direction: rtl;
 }
 
 .prayer-time {
-  font-family: 'Courier New', monospace;
-  font-weight: 600;
-  color: var(--primary-color);
-  font-size: 1.6vmin;
+    font-size: 1.75rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: var(--text-primary);
+    letter-spacing: 0.05rem;
+    position: relative;
+    z-index: 2;
 }
 
-/* Compte à rebours */
-.countdown-section {
-  text-align: center;
-  padding: 1.9vmin;
-  background: linear-gradient(135deg, var(--accent-color), rgba(45, 124, 71, 0.1));
-  border-radius: 1.3vmin;
-  border: 0.16vmin solid var(--primary-color);
+/* Pied de page */
+.footer-section {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.countdown-label {
-  font-size: 1.3vmin;
-  opacity: 0.9;
-  margin-bottom: 0.64vmin;
+.footer-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-.countdown-time {
-  font-size: 2.2vmin;
-  font-weight: 700;
-  color: var(--primary-color);
-  font-family: 'Courier New', monospace;
+.footer-line {
+    width: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
 }
 
-/* Status message */
+.footer-star {
+    color: var(--primary-light);
+    font-size: 1rem;
+}
+
+.calculation-method {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.realtime-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.pulse-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--accent-color);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.pulse-dot:nth-child(3) {
+    animation-delay: 0.75s;
+}
+
+.realtime-text {
+    font-size: 0.875rem;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+/* Overlay de statut */
+.status-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.3s ease;
+}
+
+.status-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.status-content {
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid var(--primary-light);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
 .status-message {
-  text-align: center;
-  padding: 1.3vmin;
-  font-size: 1.4vmin;
-  opacity: 0.8;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 1vmin;
-}
-
-.status-message.error {
-  background: rgba(220, 38, 38, 0.2);
-  border: 0.16vmin solid rgba(220, 38, 38, 0.5);
-  color: #fca5a5;
-}
-
-.status-message.success {
-  background: rgba(34, 197, 94, 0.2);
-  border: 0.16vmin solid rgba(34, 197, 94, 0.5);
-  color: #86efac;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 /* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(1.6vmin);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
 }
 
-.prayer-item {
-  animation: fadeIn 0.5s ease-out;
+@keyframes twinkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
 }
 
-/* Thèmes */
-.widget-container.theme-classic {
-  --bg-color: rgba(139, 69, 19, 0.9);
-  --primary-color: #d4af37;
-  --accent-color: rgba(212, 175, 55, 0.2);
-  border-radius: 8px;
+@keyframes glow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
 }
 
-.widget-container.theme-minimal {
-  --bg-color: rgba(17, 24, 39, 0.95);
-  --primary-color: #60a5fa;
-  --accent-color: rgba(96, 165, 250, 0.1);
-  border: none;
-  padding: 2.6vmin;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* Responsive adjustments using aspect ratio */
-@media (max-aspect-ratio: 1/1) {
-  .widget-container {
-    padding: 2.4vmin;
-    gap: 2vmin;
-  }
-  
-  .prayer-item {
-    flex-direction: column;
-    gap: 0.8vmin;
-    text-align: center;
-    padding: 1.4vmin;
-  }
-  
-  .current-time {
-    font-size: 2.8vmin;
-  }
-  
-  .section-title {
-    font-size: 1.6vmin;
-  }
-}
-
-@media (min-aspect-ratio: 3/1) {
-  .widget-container {
-    padding: 3.8vmin;
-    gap: 3.2vmin;
-  }
-  
-  .current-time {
-    font-size: 3.8vmin;
-  }
-  
-  .section-title {
-    font-size: 2.2vmin;
-  }
-  
-  .prayer-name, .prayer-time {
-    font-size: 1.9vmin;
-  }
-}
-
-/* États cachés */
+/* Classes utilitaires */
 .hidden {
-  display: none !important;
+    display: none !important;
+}
+
+/* Responsive - adaptation de la taille globale */
+@media (max-width: 480px) {
+    .prayer-content {
+        width: 95%;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .next-prayer-countdown {
+        font-size: 2rem;
+    }
+    
+    .prayer-time {
+        font-size: 1.5rem;
+    }
 }
