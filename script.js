@@ -41,7 +41,7 @@ class PrayerTimesWidget {
             Dhuhr: { 
                 name: 'Dhuhr', 
                 nameAr: 'الظهر', 
-                icon: this.getSunIcon(), 
+                icon: this.getSunHighIcon(), 
                 translations: {
                     fr: 'Dhohr',
                     en: 'Noon',
@@ -55,7 +55,7 @@ class PrayerTimesWidget {
             Asr: { 
                 name: 'Asr', 
                 nameAr: 'العصر', 
-                icon: this.getSunIcon(), 
+                icon: this.getCloudSunIcon(), 
                 translations: {
                     fr: 'Asr',
                     en: 'Afternoon',
@@ -122,6 +122,33 @@ class PrayerTimesWidget {
             <path d="M20 12h2"/>
             <path d="m6.34 17.66-1.41 1.41"/>
             <path d="m19.07 4.93-1.41 1.41"/>
+        </svg>`;
+    }
+    
+    getSunHighIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-medium">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 3v1"/>
+            <path d="M12 20v1"/>
+            <path d="m18.36 6.64-.7.7"/>
+            <path d="m6.34 17.66-.7.7"/>
+            <path d="M21 12h-1"/>
+            <path d="M4 12H3"/>
+            <path d="m18.36 17.36-.7-.7"/>
+            <path d="m6.34 6.34-.7-.7"/>
+            <path d="M8 12a4 4 0 1 1 8 0"/>
+        </svg>`;
+    }
+    
+    getCloudSunIcon() {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun">
+            <path d="M12 2v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="M20 12h2"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+            <path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/>
+            <path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/>
+            <circle cx="12" cy="12" r="3"/>
         </svg>`;
     }
     
