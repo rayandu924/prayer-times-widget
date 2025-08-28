@@ -1,7 +1,7 @@
 {
   "name": "Widget Heures de Prière",
-  "description": "Interface magnifique inspirée React + technique responsive ultra-simple - Glass morphism, animations fluides, parfait pour MyWallpaper",
-  "version": "2.0.0",
+  "description": "Interface épurée + géolocalisation intelligente - Rectangles glass morphism, options avancées, 100% responsive",
+  "version": "3.1.0",
   "author": {
     "name": "Rayan",
     "github": "rayandu924"
