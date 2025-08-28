@@ -1,7 +1,7 @@
 {
   "name": "Widget Heures de Prière",
   "description": "Ordre logique inversé + countdown au sol - Prochaines prières en bas, collées au sol, interface parfaite",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "author": {
     "name": "Rayan",
     "github": "rayandu924"
