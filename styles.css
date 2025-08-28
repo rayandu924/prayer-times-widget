@@ -83,10 +83,10 @@ html, body {
     animation-delay: 1s;
 }
 
-/* Contenu principal - 100% de l'espace disponible avec scaling uniforme */
+/* Contenu principal - scaling uniforme avec taille de référence */
 .prayer-content {
-    width: 400px;  /* Taille de référence fixe */
-    height: 600px; /* Taille de référence fixe */
+    width: 400px;  /* Taille de référence fixe pour scaling */
+    height: 600px; /* Taille de référence fixe pour scaling */
     position: absolute;
     top: 50%;
     left: 50%;
