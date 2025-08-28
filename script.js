@@ -53,26 +53,24 @@ class PrayerTimesWidget {
     }
     
     applyResponsiveSize() {
-        // 100% responsive - utilise directement les dimensions sans limitation
-        const fontSize = Math.min(this.dimensions.width, this.dimensions.height);
+        // Scale TOUT uniformément avec transform - proportions parfaites
+        const containerWidth = this.dimensions.width;
+        const containerHeight = this.dimensions.height;
         
-        // Plus de transform scaling - le contenu s'adapte naturellement
-        // Applique la taille directement aux éléments textuels importants
-        const mainTitle = document.querySelector('.main-title');
-        const countdownDisplay = document.querySelector('.next-prayer-countdown');
-        const prayerTimes = document.querySelectorAll('.prayer-time');
+        // Calcule les facteurs de scale pour width et height séparément
+        const scaleX = containerWidth / 400;  // 400px = largeur de référence
+        const scaleY = containerHeight / 600; // 600px = hauteur de référence
         
-        if (mainTitle) {
-            mainTitle.style.fontSize = `${fontSize * 0.1}px`;
+        // Utilise le plus petit facteur pour garder les proportions
+        const scaleFactor = Math.min(scaleX, scaleY);
+        
+        // Applique le transform sur le container principal pour que TOUT scale ensemble
+        const prayerContent = document.querySelector('.prayer-content');
+        if (prayerContent) {
+            // Combine translate et scale dans un seul transform
+            prayerContent.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+            prayerContent.style.transformOrigin = 'center center';
         }
-        
-        if (countdownDisplay) {
-            countdownDisplay.style.fontSize = `${fontSize * 0.08}px`;
-        }
-        
-        prayerTimes.forEach(time => {
-            time.style.fontSize = `${fontSize * 0.06}px`;
-        });
     }
     
     setupEventListeners() {
